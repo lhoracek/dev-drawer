@@ -29,6 +29,7 @@ android {
 
 dependencies {
     compile 'eu.chainfire:libsuperuser:1.0.0.+'
+    compile 'com.google.code.gson:gson:2.4'
 }
 
 def getVersionNameFromGit() {
