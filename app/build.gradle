@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.0"
+
+    defaultConfig {
+        applicationId "cz.lhoracek.devdrawer"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode getVersionCodeFromGit()
+        versionName getVersionNameFromGit()
+    }
+
+    buildTypes {
+        release {
+            //signingConfig signingConfigs.release
+            minifyEnabled false
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug{
+            applicationIdSuffix ".devel"
+            ext.enableCrashlytics = false
+        }
+    }
+}
+
+dependencies {
+    compile 'eu.chainfire:libsuperuser:1.0.0.+'
+}
+
+def getVersionNameFromGit() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'describe', '--tags', '--always'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
+def getVersionCodeFromGit() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-list', 'HEAD', '--count'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim().toInteger()
+}
